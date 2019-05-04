@@ -594,7 +594,7 @@
                         <div class="row">                      
                             <div class="col-xs-3">
                                 <center><label for="attack-base">Attack:</label></center>
-                                <input type="range" min="0" max="1" step="0.01" value="1"
+                                <input type="range" min="0" max="1" step="0.01" value="0"
                                 class="slider-horizontal" id="attack-base" 
                                 onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
                                 <center>0.00</center>
@@ -644,8 +644,13 @@
                         <div class="row">
                             &nbsp;
                         </div>    
-			<h5>Threshold</h5> 
+			<h5>Graph</h5> 
                         <div class="row">
+			    <div class="col-xs-6">                                 
+                                <canvas id="adsr-graph" width="480" height="320"
+				style="border:1px solid #000000;">
+				</canvas>
+                            </div>                                                                    	
                             <div class="col-xs-3">                                 
                                 <input type="range" min="0" max="1" step="0.01" value="0"
                                 class="slider-horizontal" id="adsr-threshold" 
