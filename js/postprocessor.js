@@ -66,25 +66,84 @@ Postprocessor = {
                 var decayDuration = parseFloat($("#adsr-decay-duration").data("p" + pass)) * sampleRate;
                 var releaseDuration = parseFloat($("#adsr-release-duration").data("p" + pass)) * sampleRate;
                 var sustainLevel = parseFloat($("#adsr-sustain-level").data("p" + pass)) / 100.0;
+                
+                var attackSlope = $("#adsr-attack-slope").val();
+                var decaySlope = $("#adsr-decay-slope").val();
+                var releaseSlope = $("#adsr-release-slope").val();
+                
+                var adsrThreshlod = parseFloat($("#adsr-threshold").val());
+                
+                var base = parseFloat($("#adsr-base").val());
 
                 for(var c = 0; c < channels.length; ++c) {
                     // Get the sample data of the channel
                     var audioSequence = channels[c].audioSequenceReference;
+                     
 
                     for(var i = 0; i < audioSequence.data.length; ++i) {
 
                         // TODO: Complete the ADSR postprocessor
                         // Hints: You can use the function lerp() in utility.js
                         // for performing linear interpolation
+                        
+                        var exponent = i;
+                        var multiplier = 0.000;
                                 
-                        if (i < attackDuration) {     // Attack Section         
-                            audioSequence.data[i] *= (i / attackDuration);  
+                        if (i < attackDuration) {     // Attack Section 
+                            
+                            switch(attackSlope){
+                                case "Exponential":
+                                    multiplier = Math.pow(base, exponent - attackDuration);
+                                    break;
+                                case "Linear":
+                                    multiplier = (i / attackDuration);
+                                    break;
+                                case "Logarithmic":
+                                    multiplier = Math.log(i)/Math.log(attackDuration);
+                                    break;
+                                default:
+                                    console.error("Code Error");
+                            }
+                            
+                            audioSequence.data[i] *= multiplier;  
                         } else if (i < attackDuration + decayDuration) {    // Decay Section
-                            audioSequence.data[i] *= lerp(sustainLevel, 1, (1 - (i - attackDuration)/decayDuration));
+                            
+                            exponent = i - attackDuration;
+                            switch(decaySlope){
+                                case "Exponential":
+                                    multiplier = sustainLevel + (1.0 -sustainLevel) * (1 - Math.pow(base, exponent)); // k = 1- sustainLevel
+                                    break;
+                                case "Linear":
+                                    multiplier = lerp(sustainLevel, 1, (1 - (i - attackDuration)/decayDuration));
+                                    break;
+                                case "Logarithmic":
+                                    //TODO: Define the function
+                                    multiplier = sustainLevel + (1.0 - sustainLevel) * Math.log(i - attackDuration)/Math.log(decayDuration);
+                                    break;
+                                default:
+                                    console.error("Code Error");
+                            }
+                            
+                            audioSequence.data[i] *= multiplier;
                         } else if (i < audioSequence.data.length - releaseDuration) {    // Sustain Section                                  
                             audioSequence.data[i] *= sustainLevel;
                         } else {      // Release Section
-                            audioSequence.data[i] *= (sustainLevel * (1 - (i - audioSequence.data.length + releaseDuration)/releaseDuration));
+                            exponent = i - audioSequence.data.length + releaseDuration;
+                            switch(releaseSlope){
+                                case "Exponential":
+                                    multiplier = (sustainLevel) * (1- Math.pow(base, exponent )); // k = 1- sustainLevel
+                                    break;
+                                case "Linear":
+                                    multiplier = (sustainLevel * (1 - (i - audioSequence.data.length + releaseDuration)/releaseDuration));
+                                    break;
+                                case "Logarithmic":
+                                    //TODO: Define the function
+                                    multiplier = sustainLevel * Math.log(i - attackDuration)/Math.log(decayDuration);
+                                    break;
+                                default:
+                                    console.error("Code Error");
+                            }
+                            audioSequence.data[i] *= multiplier;
                         }
 
                     }
