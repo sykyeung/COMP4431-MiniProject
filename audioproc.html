@@ -19,6 +19,7 @@
     .container { width: 1000px; margin-top: 60px }
     .navbar-inverse .navbar-brand { color: white }
 	.slider-vertical { -webkit-appearance: slider-vertical; height: 120px; }
+	.slider-horizontal { width: 100% }
     </style>
 </head>
 <body>
@@ -473,7 +474,44 @@
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="adsr">
-                        <h5>Parameters</h5>
+                        <h5>Parameters</h5>				    
+			<div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <label for="start-time">Starting from:</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input class="form-control" id="start-time" type="number" value="0.0" min="0" step="0.01">
+                                            <div class="input-group-addon">seconds</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <label for="end-time">Ending at:</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input class="form-control" id="end-time" type="number" value="6.0" min="0" step="0.01">
+                                            <div class="input-group-addon">seconds</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                                        
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-inline">
+                                <label for="use-invert">Invert</label>
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <input class="form-control toggle-control" id="use-invert" type="checkbox" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>          
+                        </div>    
+                        <div class="row">
+                            &nbsp;
+                        </div>                         
                         <div class="row">
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <label for="adsr-attack-duration">Attack duration:</label>
@@ -549,6 +587,80 @@
                                 </select>
                             </div>
                         </div>
+			<div class="row">
+                            &nbsp;
+                        </div>    
+			<h5>Base of Exponent/Logarithm</h5> 
+                        <div class="row">                      
+                            <div class="col-xs-3">
+                                <center><label for="attack-base">Attack:</label></center>
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="attack-base" 
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>
+                            <div class="col-xs-3">
+                                <center><label for="decay-base">Decay:</label></center>
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="decay-base"
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>
+                            <div class="col-xs-3">
+                                <center><label for="release-base">Release:</label></center>
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="release-base" 
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>                                                           
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+			<h5>Time Constant of Decay</h5> 
+                        <div class="row">
+                           <div class="col-xs-3">
+                                <center><label for="attack-time-con">Attack:</label></center>
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="attack-time-con" 
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>
+                            <div class="col-xs-3">
+                                <center><label for="decay-time-con">Decay:</label></center>
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="decay-time-con"
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>
+                            <div class="col-xs-3">
+                                <center><label for="release-time-con">Release:</label></center>
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="release-time-con"
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>    
+			<h5>Graph</h5> 
+                        <div class="row">
+			    <div class="col-xs-6">                                 
+                                <canvas id="adsr-graph" width="480" height="320"
+				style="border:1px solid #000000;">
+				</canvas>
+                            </div>                                                                    	
+                            <div class="col-xs-3">                                 
+                                <input type="range" min="0" max="1" step="0.01" value="0"
+                                class="slider-horizontal" id="adsr-threshold" 
+                                onchange="$(this).next().html(parseFloat($(this).val()).toFixed(2))"></input>
+                                <center>0.00</center>
+                            </div>                                                                    
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>        
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="tremolo">
