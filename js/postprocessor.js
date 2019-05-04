@@ -111,7 +111,7 @@ Postprocessor = {
                             exponent = i - attackDuration;
                             switch(decaySlope){
                                 case "Exponential":
-                                    multiplier = sustainLevel + (1.0 -sustainLevel) * (1 - Math.pow(base, exponent)); // k = 1- sustainLevel
+                                    multiplier = sustainLevel + (1.0 -sustainLevel) * (1 - Math.pow(base, exponent - decayDuration)); // k = 1- sustainLevel
                                     break;
                                 case "Linear":
                                     multiplier = lerp(sustainLevel, 1, (1 - (i - attackDuration)/decayDuration));
@@ -131,14 +131,14 @@ Postprocessor = {
                             exponent = i - audioSequence.data.length + releaseDuration;
                             switch(releaseSlope){
                                 case "Exponential":
-                                    multiplier = (sustainLevel) * (1- Math.pow(base, exponent )); // k = 1- sustainLevel
+                                    multiplier = (sustainLevel) * (1- Math.pow(base, exponent - releaseDuration)); // k = 1- sustainLevel
                                     break;
                                 case "Linear":
                                     multiplier = (sustainLevel * (1 - (i - audioSequence.data.length + releaseDuration)/releaseDuration));
                                     break;
                                 case "Logarithmic":
                                     //TODO: Define the function
-                                    multiplier = sustainLevel * Math.log(i - attackDuration)/Math.log(decayDuration);
+                                    multiplier = sustainLevel * Math.log(i - audioSequence.data.length + releaseDuration)/Math.log(decayDuration);
                                     break;
                                 default:
                                     console.error("Code Error");
