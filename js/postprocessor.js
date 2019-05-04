@@ -71,7 +71,7 @@ Postprocessor = {
                 var decaySlope = $("#adsr-decay-slope").val();
                 var releaseSlope = $("#adsr-release-slope").val();
                 
-                var adsrThreshlod = parseFloat($("#adsr-threshold").val());
+                var adsrThreshold = parseFloat($("#adsr-threshold").val());
                 
                 var base = parseFloat($("#adsr-base").val());
 
@@ -144,6 +144,10 @@ Postprocessor = {
                                     console.error("Code Error");
                             }
                             audioSequence.data[i] *= multiplier;
+                        }
+                        
+                        if ( audioSequence.data[i] < adsrThreshold){
+                            audioSequence.data[i] = 0;
                         }
 
                     }
