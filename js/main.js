@@ -277,7 +277,7 @@ $(document).ready(function() {
     // procedure 'updateWaveformDisplay'.
     // After setting up the event handler, we also take the first element in the set
     // and programmatically trigger a 'change' event.
-    $("#karplus-base, #additiveSynthExample, input").not("[id^=import], #zoomStartFrom").on("change", updateWaveformDisplay).first().change();
+                  $("#karplus-base, #additiveSynthExample, #attack-slope, #decay-slope, #release-slope, #use-invert, input").not("[id^=import], #zoomStartFrom").on("change", updateWaveformDisplay).first().change();
 
     // Play and Stop button
     $("#btnPlay").on("click", function() { audioControl.play(); });
