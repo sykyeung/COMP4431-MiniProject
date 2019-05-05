@@ -99,12 +99,13 @@ Postprocessor = {
                         
                         var exponent = i;
                         var multiplier = 0.000;
-                                
-                        if (i < attackDuration) {     // Attack Section 
-                            
+                          
+                        
+                        if (i < attackDuration) {     // Attack Section
+
                             switch(attackSlope){
                                 case "Exponential":
-                                    multiplier = Math.pow(attackBase, exponent - attackDuration);
+                                    multiplier = Math.exp(-(attackDuration - i)/(attackConst * 10000));
                                     break;
                                 case "Linear":
                                     multiplier = (i / attackDuration);
@@ -122,11 +123,11 @@ Postprocessor = {
                                 audioSequence.data[i] *= multiplier;
                             }
                         } else if (i < attackDuration + decayDuration) {    // Decay Section
-                            
+
                             exponent = i - attackDuration;
                             switch(decaySlope){
                                 case "Exponential":
-                                    multiplier = sustainLevel + (1.0 -sustainLevel) * (1 - Math.pow(decayBase, exponent - decayDuration)); // k = 1- sustainLevel
+                                    multiplier = sustainLevel + (1.0 -sustainLevel) * Math.exp(-(i - attackDuration)/(decayConst * 10000)); // k = 1- sustainLevel
                                     break;
                                 case "Linear":
                                     multiplier = lerp(sustainLevel, 1, (1 - (i - attackDuration)/decayDuration));
@@ -138,14 +139,14 @@ Postprocessor = {
                                 default:
                                     console.error("Code Error");
                             }
-                            
+
                             if(adsrInvert){
                                 audioSequence.data[i] *= 1 - multiplier;
                             }
                             else{
                                 audioSequence.data[i] *= multiplier;
                             }
-                        } else if (i < audioSequence.data.length - releaseDuration) {    // Sustain Section                                  
+                        } else if (i < audioSequence.data.length - releaseDuration) {    // Sustain Section
                             if(adsrInvert){
                                 audioSequence.data[i] *= 1 - sustainLevel;
                             }
@@ -156,7 +157,7 @@ Postprocessor = {
                             exponent = i - audioSequence.data.length + releaseDuration;
                             switch(releaseSlope){
                                 case "Exponential":
-                                    multiplier = (sustainLevel) * (1- Math.pow(releaseBase, exponent - releaseDuration)); // k = 1- sustainLevel
+                                    multiplier = sustainLevel * Math.exp(-(i - (audioSequence.data.length - releaseDuration))/(releaseConst * 10000)); // k = 1- sustainLevel
                                     break;
                                 case "Linear":
                                     multiplier = (sustainLevel * (1 - (i - audioSequence.data.length + releaseDuration)/releaseDuration));
@@ -177,7 +178,7 @@ Postprocessor = {
                         }
                         if(audioSequence.data[i]>1){audioSequence.data[i] = 1;}
                         if(audioSequence.data[i]<-1){audioSequence.data[i] = -1;}
-                        
+
 
                         graphYLabels.push(multiplier);
                         
