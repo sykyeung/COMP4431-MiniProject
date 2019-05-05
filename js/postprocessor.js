@@ -192,13 +192,13 @@ Postprocessor = {
                             audioSequence.data[i] = 0;
                         }
                         
-
                     }
 
                     // Update the sample data with the post-processed data
                     channels[c].setAudioSequence(audioSequence);
                     
-                    var canvasElement = document.getElementById("ADSR_Canvas");
+                    // Draw the graph
+                    drawGraph(graphYLabels, audioSequence, sampleRate);
                 }
                 break;
 
