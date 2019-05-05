@@ -1,3 +1,5 @@
+require "./graphController.js";
+
 // This object represent the postprocessor
 Postprocessor = {
     // The postprocess function takes the audio samples data and the post-processing effect name
