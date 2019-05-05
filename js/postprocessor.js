@@ -67,11 +67,22 @@ Postprocessor = {
                 var releaseDuration = parseFloat($("#adsr-release-duration").data("p" + pass)) * sampleRate;
                 var sustainLevel = parseFloat($("#adsr-sustain-level").data("p" + pass)) / 100.0;
                 
-                var attackSlope = $("#adsr-attack-slope").val();
-                var decaySlope = $("#adsr-decay-slope").val();
-                var releaseSlope = $("#adsr-release-slope").val();
+                var attackSlope = $("#attack-slope").val();
+                var decaySlope = $("#decay-slope").val();
+                var releaseSlope = $("#release-slope").val();
                 
                 var adsrThreshold = parseFloat($("#adsr-threshold").val());
+                var adsrStart = parseFloat($("#start-time").val());
+                var adsrEnd = parseFloat($("#end-time").val());
+                
+                var attackBase = parseFloat($("#attack-base").val());
+                var decayBase = parseFloat($("#decay-base").val());
+                var releaseBase = parseFloat($("#release-base").val());
+                var attackConst = parseFloat($("#attack-time-con").val());
+                var decayConst = parseFloat($("#decay-time-con").val());
+                var releaseConst = parseFloat($("#release-time-con").val());
+                
+                var adsrInvert = $("#use-invert").prop("checked");
                 
                 var base = parseFloat($("#adsr-base").val());
 
@@ -146,8 +157,17 @@ Postprocessor = {
                             audioSequence.data[i] *= multiplier;
                         }
                         
-                        if ( audioSequence.data[i] < adsrThreshold){
+                        if ( audioSequence.data[i] < adsrThreshold && audioSequence.data[i] > -adsrThreshold){
                             audioSequence.data[i] = 0;
+                        }
+                        
+                        if(adsrInvert){
+                            if(audioSequence.data[i] > 0){
+                                audioSequence.data[i] = 1 - audioSequence.data[i];
+                               }
+                            else{
+                                audioSequence.data[i] = -1 - audioSequence.data[i];
+                            }
                         }
 
                     }
