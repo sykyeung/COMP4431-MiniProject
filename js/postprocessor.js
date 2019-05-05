@@ -84,8 +84,6 @@ Postprocessor = {
                 
                 var adsrInvert = $("#use-invert").prop("checked");
                 
-                var base = parseFloat($("#adsr-base").val());
-
                 for(var c = 0; c < channels.length; ++c) {
                     // Get the sample data of the channel
                     var audioSequence = channels[c].audioSequenceReference;
@@ -104,13 +102,13 @@ Postprocessor = {
                             
                             switch(attackSlope){
                                 case "Exponential":
-                                    multiplier = Math.pow(base, exponent - attackDuration);
+                                    multiplier = Math.pow(attackBase, exponent - attackDuration);
                                     break;
                                 case "Linear":
                                     multiplier = (i / attackDuration);
                                     break;
                                 case "Logarithmic":
-                                    multiplier = Math.log(i)/Math.log(attackDuration);
+                                    multiplier = ((Math.log(i+1)/Math.log(attackDuration+1)) + attackBase)/(attackBase + 1);
                                     break;
                                 default:
                                     console.error("Code Error");
@@ -126,7 +124,7 @@ Postprocessor = {
                             exponent = i - attackDuration;
                             switch(decaySlope){
                                 case "Exponential":
-                                    multiplier = sustainLevel + (1.0 -sustainLevel) * (1 - Math.pow(base, exponent - decayDuration)); // k = 1- sustainLevel
+                                    multiplier = sustainLevel + (1.0 -sustainLevel) * (1 - Math.pow(decayBase, exponent - decayDuration)); // k = 1- sustainLevel
                                     break;
                                 case "Linear":
                                     multiplier = lerp(sustainLevel, 1, (1 - (i - attackDuration)/decayDuration));
@@ -156,7 +154,7 @@ Postprocessor = {
                             exponent = i - audioSequence.data.length + releaseDuration;
                             switch(releaseSlope){
                                 case "Exponential":
-                                    multiplier = (sustainLevel) * (1- Math.pow(base, exponent - releaseDuration)); // k = 1- sustainLevel
+                                    multiplier = (sustainLevel) * (1- Math.pow(releaseBase, exponent - releaseDuration)); // k = 1- sustainLevel
                                     break;
                                 case "Linear":
                                     multiplier = (sustainLevel * (1 - (i - audioSequence.data.length + releaseDuration)/releaseDuration));
