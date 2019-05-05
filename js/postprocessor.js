@@ -115,8 +115,12 @@ Postprocessor = {
                                 default:
                                     console.error("Code Error");
                             }
-                            
-                            audioSequence.data[i] *= multiplier;  
+                            if(adsrInvert){
+                                audioSequence.data[i] *= 1 - multiplier;
+                            }
+                            else{
+                                audioSequence.data[i] *= multiplier;
+                            }
                         } else if (i < attackDuration + decayDuration) {    // Decay Section
                             
                             exponent = i - attackDuration;
@@ -135,9 +139,19 @@ Postprocessor = {
                                     console.error("Code Error");
                             }
                             
-                            audioSequence.data[i] *= multiplier;
+                            if(adsrInvert){
+                                audioSequence.data[i] *= 1 - multiplier;
+                            }
+                            else{
+                                audioSequence.data[i] *= multiplier;
+                            }
                         } else if (i < audioSequence.data.length - releaseDuration) {    // Sustain Section                                  
-                            audioSequence.data[i] *= sustainLevel;
+                            if(adsrInvert){
+                                audioSequence.data[i] *= 1 - sustainLevel;
+                            }
+                            else{
+                                audioSequence.data[i] *= sustainLevel;
+                            }
                         } else {      // Release Section
                             exponent = i - audioSequence.data.length + releaseDuration;
                             switch(releaseSlope){
@@ -154,21 +168,18 @@ Postprocessor = {
                                 default:
                                     console.error("Code Error");
                             }
-                            audioSequence.data[i] *= multiplier;
+                            if(adsrInvert){
+                                audioSequence.data[i] *= 1 - multiplier;
+                            }
+                            else{
+                                audioSequence.data[i] *= multiplier;
+                            }
                         }
                         
                         if ( audioSequence.data[i] < adsrThreshold && audioSequence.data[i] > -adsrThreshold){
                             audioSequence.data[i] = 0;
                         }
                         
-                        if(adsrInvert){
-                            if(audioSequence.data[i] > 0){
-                                audioSequence.data[i] = 1 - audioSequence.data[i];
-                               }
-                            else{
-                                audioSequence.data[i] = -1 - audioSequence.data[i];
-                            }
-                        }
 
                     }
 
