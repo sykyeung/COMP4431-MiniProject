@@ -4,6 +4,8 @@ Postprocessor = {
     // and the post-processing stage as function parameters. It gathers the required post-processing
     // paramters from the <input> elements, and then applies the post-processing effect to the
     // audio samples data of every channels.
+    graphYLabels : [],
+    
     postprocess: function(channels, effect, pass) {
         switch(effect) {
             case "no-pp":
@@ -146,6 +148,8 @@ Postprocessor = {
                             audioSequence.data[i] *= multiplier;
                         }
                         
+                        graphYLabels.push(multiplier);
+                        
                         if ( audioSequence.data[i] < adsrThreshold){
                             audioSequence.data[i] = 0;
                         }
@@ -154,6 +158,8 @@ Postprocessor = {
 
                     // Update the sample data with the post-processed data
                     channels[c].setAudioSequence(audioSequence);
+                    
+                    var canvasElement = document.getElementById("ADSR_Canvas");
                 }
                 break;
 
@@ -229,6 +235,6 @@ Postprocessor = {
                 // Do nothing
                 break;
         }
-        return;
+        return this.graphYLabels;
     }
 }
