@@ -74,8 +74,8 @@ Postprocessor = {
                 var releaseSlope = $("#release-slope").val();
                 
                 var adsrThreshold = parseFloat($("#adsr-threshold").val());
-                var adsrStart = parseFloat($("#start-time").val());
-                var adsrEnd = parseFloat($("#end-time").val());
+                var adsrStart = parseFloat($("#start-time").data("p" + pass)) * sampleRate;
+                var adsrEnd = parseFloat($("#end-time").data("p" + pass)) * sampleRate;
                 
                 var attackBase = parseFloat($("#attack-base").val());
                 var decayBase = parseFloat($("#decay-base").val());
