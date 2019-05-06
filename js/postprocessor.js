@@ -98,7 +98,7 @@ Postprocessor = {
                         // for performing linear interpolation
                         
                         var exponent = i;
-                        var multiplier = 0.000;
+                        var multiplier = 1.000;
                           
 
                         if(i<adsrStart){}
