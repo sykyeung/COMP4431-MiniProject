@@ -4,7 +4,7 @@ Postprocessor = {
     // and the post-processing stage as function parameters. It gathers the required post-processing
     // paramters from the <input> elements, and then applies the post-processing effect to the
     // audio samples data of every channels.
-    graphYLabels : [],
+    graphYLabels : [0.00],
     
     postprocess: function(channels, effect, pass) {
         switch(effect) {
@@ -89,7 +89,7 @@ Postprocessor = {
                 for(var c = 0; c < channels.length; ++c) {
                     // Get the sample data of the channel
                     var audioSequence = channels[c].audioSequenceReference;
-                     
+                    graphYLabels.pop(); 
 
                     for(var i = 0; i < audioSequence.data.length; ++i) {
 
