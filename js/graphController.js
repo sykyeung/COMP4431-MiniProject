@@ -1,7 +1,7 @@
 function drawGraph(graphYLabels, audioSequence, sampleRate){
     
     var canvas = document.getElementById("adsr-graph");
-    var context = canvas.getContext("2d")
+    var context = canvas.getContext("2d");
     
     // get Attributes
     var graphCanvasWidth = canvas.getAttribute("width");
