@@ -113,6 +113,7 @@ Postprocessor = {
                                     break;
                                 case "Logarithmic":
                                     multiplier = ((Math.log(i-adsrStart+1)/Math.log(attackDuration+1)) + attackBase)/(attackBase + 1);
+                                    if(multiplier < 0){multiplier = 0;}
                                     break;
                                 default:
                                     console.error("Code Error");
@@ -136,6 +137,7 @@ Postprocessor = {
                                 case "Logarithmic":
                                     //TODO: Define the function
                                     multiplier = sustainLevel + (1.0 - sustainLevel) * (Math.log(decayDuration - (i - attackDuration - adsrStart)+1)/Math.log(decayDuration+1) + decayBase)/(decayBase+1);
+                                    if(multiplier < 0){multiplier = 0;}
                                     break;
                                 default:
                                     console.error("Code Error");
@@ -168,6 +170,7 @@ Postprocessor = {
                                 case "Logarithmic":
                                     //TODO: Define the function
                                     multiplier = sustainLevel * (Math.log(audioSequence.data.length - adsrEnd - i + 1)/Math.log(releaseDuration+1) + releaseBase)/(releaseBase+1);
+                                    if(multiplier < 0){multiplier = 0;}
                                     break;
                                 default:
                                     console.error("Code Error");
