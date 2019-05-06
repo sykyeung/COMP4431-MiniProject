@@ -89,7 +89,7 @@ Postprocessor = {
                 for(var c = 0; c < channels.length; ++c) {
                     // Get the sample data of the channel
                     var audioSequence = channels[c].audioSequenceReference;
-                    graphYLabels.pop(); 
+                    this.graphYLabels.splice(0, this.graphYLabels.length);
 
                     for(var i = 0; i < audioSequence.data.length; ++i) {
 
@@ -148,11 +148,13 @@ Postprocessor = {
                                 audioSequence.data[i] *= multiplier;
                             }
                         } else if (i < audioSequence.data.length - releaseDuration - adsrEnd) {    // Sustain Section
+                            multiplier = sustainLevel;
+                            
                             if(adsrInvert){
-                                audioSequence.data[i] *= 1 - sustainLevel;
+                                audioSequence.data[i] *= 1 - multiplier;
                             }
                             else{
-                                audioSequence.data[i] *= sustainLevel;
+                                audioSequence.data[i] *= multiplier;
                             }
                         } else if (i < audioSequence.data.length - adsrEnd) {      // Release Section
                             exponent = i - audioSequence.data.length + releaseDuration;
@@ -182,7 +184,7 @@ Postprocessor = {
                         if(audioSequence.data[i]<-1){audioSequence.data[i] = -1;}
 
 
-                        graphYLabels.push(multiplier);
+                        this.graphYLabels.push(multiplier);
                         
                             
                         if ( audioSequence.data[i] < adsrThreshold && audioSequence.data[i] > -adsrThreshold){
@@ -196,7 +198,7 @@ Postprocessor = {
                     channels[c].setAudioSequence(audioSequence);
                     
                     // Draw the graph
-                    drawGraph(graphYLabels, audioSequence, sampleRate);
+                    drawGraph(this.graphYLabels, audioSequence, sampleRate);
                 }
                 break;
 
